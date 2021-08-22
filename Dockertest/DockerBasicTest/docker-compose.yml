@@ -1,0 +1,24 @@
+version: "2.2"
+services:
+    alpine39:
+        image: "alpine"
+        command: ["sleep","1800"]
+    alpine1:
+        image: "alpine:3.14.1"
+        command: ["sleep","60"]
+    ubuntu30:
+        image: "ubuntu"
+        command: ["sleep","1800"]
+    ubuntu5:
+        image: "ubuntu:hirsute"
+        container_name: "hirsute"
+        command: ["sleep","300"] 
+    alpine0.5:
+        image: "alpine:3.14.1"
+        command: ["sleep","5"]
+    image:
+        image: "alpine:3.11"
+        command: ["sleep","1800"]
+    name:
+        image: "alpine:3.10.8"
+        command: ["sleep","500"]  
