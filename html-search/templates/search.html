@@ -7,10 +7,10 @@
         <link rel="stylesheet" href="/static/index.css">
     </head>
     <body>
-        <h1><center>Library</center></h1>
+        <h1><center>Employee Details</center></h1>
         <form class="example" method="post" action=""
          style="margin:auto;max-width:600px">
-            <input type="text" placeholder="Search by author or book, or all to see all the data" name="book">
+            <input type="text" placeholder="Search by name, or all to see all the employee data" name="name">
             <button type="submit"><i class="fa fa-search"></i>
             </button>
         </form>
@@ -21,22 +21,28 @@
 <col style="width: 270px">
 <col style="width: 281px">
 <col style="width: 207px">
+<col style="width: 221px">
+<col style="width: 141px">
 </colgroup>
 <thead>
   <tr>
     <th class="table-head">EMP ID</th>
-    <th class="table-head">NAME</th>
+    <th class="table-head">FIRST NAME</th>
+    <th class="table-head">LAST NAME</th>
+    <th class="table-head">DATE OF BIRTH</th>
     <th class="table-head">OCCUPATION</th>
-    <th class="table-head">AGE</th>
+    <th class="table-head">GENDER</th>
   </tr>
 </thead>
 {% for user in data %}
 <tbody>
   <tr>
-    <td class="table-data">{{user[0]}}<br></td>
-    <td class="table-data">{{user[1]}}<br></td>
+    <td class="table-data">{{user[0]}}</td>
+    <td class="table-data">{{user[1]}}</td>
     <td class="table-data">{{user[2]}}</td>
-    <td class="table-data">{{user.age}}</td>
+    <td class="table-data">{{user[3]}}</td>
+    <td class="table-data">{{user[4]}}</td>
+    <td class="table-data">{{user[5]}}</td>
   </tr>
 </tbody>
 {% endfor %}

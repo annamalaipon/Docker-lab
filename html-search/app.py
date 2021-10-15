@@ -1,14 +1,15 @@
-# library.py
 from flask import Flask, render_template, request, redirect
 from flaskext.mysql import MySQL
+import os
+import datetime
 
 app = Flask(__name__)
 
 # Database connection info. Note that this is not a secure connection.
-app.config['MYSQL_DATABASE_USER'] = 'root'
-app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
-app.config['MYSQL_DATABASE_DB'] = 'LibraryDB'
-app.config['MYSQL_DATABASE_HOST'] = 'mysql'
+app.config['MYSQL_DATABASE_USER'] = os.environ.get("MYSQL_DATABASE_USER")
+app.config['MYSQL_DATABASE_PASSWORD'] = os.environ.get("MYSQL_DATABASE_PASSWORD")
+app.config['MYSQL_DATABASE_DB'] = os.environ.get("MYSQL_DATABASE_DB")
+app.config['MYSQL_DATABASE_HOST'] = os.environ.get("MYSQL_DATABASE_HOST")
 
 mysql = MySQL()
 mysql.init_app(app)
@@ -19,19 +20,21 @@ cursor = conn.cursor()
 @app.route('/search', methods=['GET', 'POST'])
 def search():
     if request.method == "POST":
-        book = request.form['book']
-        # search by author or book
-        cursor.execute("SELECT book_id, name, author from Book WHERE name LIKE %s OR author LIKE %s", (book, book))
+        name = request.form['name']
+        # search by employee firstname or lastname
+        cursor.execute("SELECT emp_id, firstname, lastname, date_birth, occupation, gender\
+         from Employee WHERE firstname LIKE %s OR lastname LIKE %s", (name, name))
         conn.commit()
         data = cursor.fetchall()
-        # all in the search box will return all the tuples
-        if len(data) == 0 and book == 'all':
-            cursor.execute("SELECT book_id, name, author from Book")
+        # all in the search box will return all the employee
+        if len(data) == 0 and name == 'all':
+            cursor.execute("SELECT emp_id, firstname, lastname, date_birth, occupation, gender from Employee")
             conn.commit()
             data = cursor.fetchall()
         return render_template('search.html', data=data)
+    # default search will show all employee
     if request.method == "GET":
-        cursor.execute("SELECT book_id, name, author from Book")
+        cursor.execute("SELECT emp_id, firstname, lastname, date_birth, occupation, gender from Employee")
         conn.commit()
         data = cursor.fetchall()
         return render_template('search.html', data=data)
@@ -40,11 +43,17 @@ def search():
 @app.route('/insert', methods=['GET', 'POST'])
 def insert():
     if request.method == "POST":
-        book = request.form['book']
-        author = request.form['author']
-        cursor.execute("INSERT INTO Book (name, author) Values (%s,%s)", (book, author))
+        firstname = request.form['firstname']
+        lastname = request.form['lastname']
+        dob = request.form['Date of Birth']
+        occupation = request.form['occupation']
+        gender = request.form['gender']
+        format = '%d/%m/%Y'
+        # convert from string format to datetime format
+        date = datetime.datetime.strptime(dob, format)
+        cursor.execute("INSERT INTO Employee (firstname, lastname, date_birth, occupation, gender) \
+        Values (%s, %s, %s, %s, %s)", (firstname, lastname, date, occupation, gender))
         conn.commit()
-        #return redirect("http://localhost:5000/search", code=302)
     return render_template('insert.html')
 
 @app.route("/")
