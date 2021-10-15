@@ -1,10 +1,10 @@
 # start from base
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 LABEL maintainer="Annamalai <annamalaipon@gmail.com>"
 
 RUN apt-get update -y && \
-    apt-get install -y python-pip python-dev
+    apt-get install -y python3-pip python3-dev
 
 # We copy just the requirements.txt first to leverage Docker cache
 COPY ./requirements.txt /app/requirements.txt
@@ -19,4 +19,4 @@ ENV MYSQL_DATABASE_HOST=mysql
 
 COPY . /app
 
-CMD [ "python", "./app.py" ]
+CMD [ "python3", "./app.py" ]
