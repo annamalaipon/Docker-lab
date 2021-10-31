@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webcolor
+  labels:
+    env: test
+spec:
+  template:
+    metadata:
+      name: webcolor
+      labels:
+        env: test
+    spec:
+      containers:
+      - name: webcolor
+        image: 24031990/mysimpleweb
+        ports:
+        - containerPort: 5000
+        env:
+          - name: "COLOR"
+            value: "powderblue"
+  replicas: 2
+  selector:
+    matchLabels:
+      env: test
+    
